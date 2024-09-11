@@ -1,7 +1,24 @@
-const { select } = require('@inquirer/prompts')
+const { select,input } = require('@inquirer/prompts')
 // avisando acima que está função acima irá me devolver um objeto e eu quero apenas o select
 //importando os módulos, assim, seguindo esse caminho:
-//vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select 
+//vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
+
+let metas= []
+
+const cadastarMeta = async () => {
+
+    const meta = await input({message: "Digite a meta"})
+    
+    // se o tamanho for igual a zero, ou seja, o número de caracteres, então não há nada digitado
+    if(meta.length == 0){
+        console.log("A meta não pode ser vazia")
+        return 
+    }
+
+    metas.push(
+        {value: meta, checked: false}
+    )
+}
 
 //função assíncrona e Promises
 const start = async () => {
@@ -32,12 +49,13 @@ const start = async () => {
        switch(opcao){
 
         case "cadastrar":
-            console.log("vamos cadastrar")
-            break
+            await cadastarMeta()
+            console.log(metas)
+            break;
 
         case "listar":
             console.log("vamos listar")
-            break
+            break;
 
         case "sair":
             console.log("até a proxima")
