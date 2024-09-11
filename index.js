@@ -1,9 +1,14 @@
-const { select,input } = require('@inquirer/prompts')
+const { select,input, checkbox} = require('@inquirer/prompts')
 // avisando acima que está função acima irá me devolver um objeto e eu quero apenas o select
 //importando os módulos, assim, seguindo esse caminho:
 //vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
+let meta = {
 
-let metas= []
+    value: "tomar 3L",
+    checked: false,
+}
+
+let metas= [meta]
 
 const cadastarMeta = async () => {
 
@@ -19,6 +24,43 @@ const cadastarMeta = async () => {
         {value: meta, checked: false}
     )
 }
+
+const listarMetas = async() => {
+
+    const respostas = await checkbox({
+
+        message: "use as setas para mudar de metas, o espaço para marcar ou desmacar e o enter para finalizar esta etapa",
+
+        //os pontos significam que todos o itens estão la dentro do array, assim tudo o que tem dentro de metas, é como se fosse a cópia
+        choices: [...metas],
+        instructions: false, 
+    })
+
+    if(respostas.length == 0){
+        console.log("nenhuma meta selecionada")
+        return
+    }
+
+    //de todas as metas, eu vou para cada meta, eu vou pegar o checked e deixar como false, assim está desmarcando todas.
+
+    metas.forEach((m) => {
+
+        m.checked = false
+    })
+
+    respostas.forEach((resposta) => {
+
+        const meta = metas.find((m) => {
+
+            return m.value == resposta
+        })
+
+        meta.checked = true
+    })
+
+    console.log("Metas(s) marcadas como concluidas ")
+}
+
 
 //função assíncrona e Promises
 const start = async () => {
@@ -54,6 +96,7 @@ const start = async () => {
             break;
 
         case "listar":
+            await listarMetas()
             console.log("vamos listar")
             break;
 
