@@ -6,3 +6,4 @@
 - marcar/desmarcar metas
 - [x] remover metas
 - [x] sistemas de menssagem 
+- [x] persistencia de dados: sistema de carregar e salvar metas com JSON

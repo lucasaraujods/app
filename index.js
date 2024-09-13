@@ -1,17 +1,27 @@
 const { select,input, checkbox} = require('@inquirer/prompts')
+const fs = require ("fs").promises
 // avisando acima que está função acima irá me devolver um objeto e eu quero apenas o select
 //importando os módulos, assim, seguindo esse caminho:
 //vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
 
 let mensagem ="em vindo ao app de metas"
 
-let meta = {
+let metas
 
-    value: "tomar 3L",
-    checked: false,
+const carregarMetas = async () => {
+    try {
+        const dados = await fs.readFile("metas.json", "utf-8")
+        metas = JSON.parse(dados) // aqui o parse converte os dados que estã em JSON para um array de metas 
+    }
+    catch(erro){
+        metas = []
+    }
 }
 
-let metas= [meta]
+const salvarMetas = async ()  => {
+    await fs.writeFile("metas.json", JSON.stringify(metas, null, 2))
+}
+
 
 const cadastarMeta = async () => {
 
@@ -32,6 +42,10 @@ const cadastarMeta = async () => {
 
 const listarMetas = async() => {
 
+    if(metas.length == 0){
+        mensagem = "não existem metas!"
+        return
+    }
     const respostas = await checkbox({
 
         message: "use as setas para mudar de metas, o espaço para marcar ou desmacar e o enter para finalizar esta etapa",
@@ -67,6 +81,11 @@ const listarMetas = async() => {
 
 const metasRealizadas = async () => {
 
+    if(metas.length == 0){
+        mensagem = "não existem metas!"
+        return
+    }
+
     //usando uma função de array filter, ou seja, HOF, assim sempre que esta função for verdedadeira, ele vai pegar o parametro da meta dentro da função e colocar em uma nova lista
     const realizadas = metas.filter((meta) => {
         // retorna verdadeiro o checked e assim ela vai pra lista de metas realizadas
@@ -89,6 +108,11 @@ const metasRealizadas = async () => {
 
 const metasAbertas = async () => {
 
+    if(metas.length == 0){
+        mensagem = "não existem metas!"
+        return
+    }
+
     const abertas = metas.filter((meta) => {
 
         //se for falso, ira retornar a cfunção metasAbertas verdadeiro
@@ -110,6 +134,11 @@ const metasAbertas = async () => {
 }
 
 const deletarMetas = async () => {
+    
+    if(metas.length == 0){
+        mensagem = "não existem metas!"
+        return
+    }
     // usamos uma HOF novamente, executa para cada emta e precisa retornar o que vai ser mapeado, modificado
     const metasDesmarcadas = metas.map((meta) => {
         
@@ -160,8 +189,11 @@ const mostrarMenssagem = () => {
 
 //função assíncrona e Promises
 const start = async () => {
+    await carregarMetas()
+
     while (true) {
         mostrarMenssagem()
+        await salvarMetas()
         // usando um promisse, com await e sempre que for usar o await a função deve ser assincrona, assim neste prompt esperamos o usuario selecionar, para que não passe diretamente para a proxima linha, assim sendo o while e executando todos os casos de uma vez 
 
        const opcao = await select({
