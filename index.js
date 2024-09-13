@@ -61,6 +61,28 @@ const listarMetas = async() => {
     console.log("Metas(s) marcadas como concluidas ")
 }
 
+const metasRealizadas = async () => {
+
+    //usando uma função de array filter, ou seja, HOF, assim sempre que esta função for verdedadeira, ele vai pegar o parametro da meta dentro da função e colocar em uma nova lista
+    const realizadas = metas.filter((meta) => {
+        // retorna verdadeiro o checked e assim ela vai pra lista de metas realizadas
+        return meta.checked
+    })
+
+    //verificar se as metas realizadas
+    if(realizadas.length == 0){
+        console.log("Não exitem metas realizadas")
+        return
+    }
+
+    await select({
+
+        message: "Metas Realizadas",
+        //usando o spread operator: ... dessa forma ele faz um novo array e o antigo está sendo jgado dentro deste novo array
+        choices: [...realizadas]
+    })
+}
+
 
 //função assíncrona e Promises
 const start = async () => {
@@ -82,6 +104,10 @@ const start = async () => {
                     value: "listar"
                 },
                 {
+                    name: "Metas realizadas",
+                    value: "realizadas"
+                },
+                {
                     name: "Sair",
                     value: "sair"
                 }
@@ -94,12 +120,13 @@ const start = async () => {
             await cadastarMeta()
             console.log(metas)
             break;
-
         case "listar":
             await listarMetas()
             console.log("vamos listar")
             break;
-
+        case "realizadas":
+            await metasRealizadas()
+            break;
         case "sair":
             console.log("até a proxima")
             //o return signiifca que vai parar a função
