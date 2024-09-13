@@ -2,6 +2,9 @@ const { select,input, checkbox} = require('@inquirer/prompts')
 // avisando acima que está função acima irá me devolver um objeto e eu quero apenas o select
 //importando os módulos, assim, seguindo esse caminho:
 //vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
+
+let mensagem ="em vindo ao app de metas"
+
 let meta = {
 
     value: "tomar 3L",
@@ -16,13 +19,15 @@ const cadastarMeta = async () => {
     
     // se o tamanho for igual a zero, ou seja, o número de caracteres, então não há nada digitado
     if(meta.length == 0){
-        console.log("A meta não pode ser vazia")
+        mensagem = "A meta não pode ser vazia"
         return 
     }
 
     metas.push(
         {value: meta, checked: false}
     )
+
+    mensagem = "Meta cadastrada com sucesso!"
 }
 
 const listarMetas = async() => {
@@ -43,7 +48,7 @@ const listarMetas = async() => {
 
 
     if(respostas.length == 0){
-        console.log("nenhuma meta selecionada")
+        mensagem = "nenhuma meta selecionada"
         return
     }
 
@@ -57,7 +62,7 @@ const listarMetas = async() => {
         meta.checked = true
     })
 
-    console.log("Metas(s) marcadas como concluidas ")
+    mensagem = "Metas(s) marcada(s) como concluidas"
 }
 
 const metasRealizadas = async () => {
@@ -70,7 +75,7 @@ const metasRealizadas = async () => {
 
     //verificar se as metas realizadas
     if(realizadas.length == 0){
-        console.log("Não exitem metas realizadas")
+        mensagem = "Não existem metas realizadas"
         return
     }
 
@@ -92,7 +97,7 @@ const metasAbertas = async () => {
 
     if(abertas.length == 0){
 
-        console.log("Não existem metas abertas!")
+        mensagem = "Não existem metas abertas!"
         return
     }
 
@@ -124,7 +129,7 @@ const deletarMetas = async () => {
 
     if(itemsADeletar.length == 0){
 
-        console.log("Nenhum item para deletar")
+        mensagem = "Nenhum item para deletar"
         return
     }
 
@@ -136,13 +141,27 @@ const deletarMetas = async () => {
         })
     })
 
-    console.log("Meta(s) deletada(s) com sucesso!")
+    mensagem = "Meta(s) deletada(s) com sucesso!"
+}
+
+const mostrarMenssagem = () => {
+
+    console.clear();
+
+    if(mensagem != ""){
+
+        console.log(mensagem)
+        console.log("")
+        mensagem =""
+    }
+
 }
 
 
 //função assíncrona e Promises
 const start = async () => {
     while (true) {
+        mostrarMenssagem()
         // usando um promisse, com await e sempre que for usar o await a função deve ser assincrona, assim neste prompt esperamos o usuario selecionar, para que não passe diretamente para a proxima linha, assim sendo o while e executando todos os casos de uma vez 
 
        const opcao = await select({
@@ -182,7 +201,6 @@ const start = async () => {
 
         case "cadastrar":
             await cadastarMeta()
-            console.log(metas)
             break;
         case "listar":
             await listarMetas()
