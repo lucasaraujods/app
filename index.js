@@ -104,6 +104,41 @@ const metasAbertas = async () => {
     })
 }
 
+const deletarMetas = async () => {
+    // usamos uma HOF novamente, executa para cada emta e precisa retornar o que vai ser mapeado, modificado
+    const metasDesmarcadas = metas.map((meta) => {
+        
+        return {value: meta.value, checked: false}
+    })
+
+    const itemsADeletar = await checkbox({
+
+        message: "selecione item para deletar",
+
+        //os pontos significam que todos o itens estão la dentro do array, assim tudo o que tem dentro de metas, é como se fosse a cópia
+        choices: [...metasDesmarcadas],
+        instructions: false, 
+    })
+
+    console.log(itemsADeletar)
+
+    if(itemsADeletar.length == 0){
+
+        console.log("Nenhum item para deletar")
+        return
+    }
+
+    itemsADeletar.forEach((item) => {
+
+        metas = metas.filter((meta) => {
+            //fica somente na nova lista de metas aquilo que não for marcado 
+            return meta.value != item
+        })
+    })
+
+    console.log("Meta(s) deletada(s) com sucesso!")
+}
+
 
 //função assíncrona e Promises
 const start = async () => {
@@ -133,6 +168,10 @@ const start = async () => {
                     value: "abertas"
                 },
                 {
+                    name: "Deletar metas",
+                    value: "deletar"
+                },
+                {
                     name: "Sair",
                     value: "sair"
                 }
@@ -155,6 +194,9 @@ const start = async () => {
         case "abertas":
             await metasAbertas()
             break;
+        case "deletar":
+                await deletarMetas()
+                break;
         case "sair":
             console.log("até a proxima")
             //o return signiifca que vai parar a função
