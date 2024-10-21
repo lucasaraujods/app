@@ -2,9 +2,9 @@ const { select,input, checkbox} = require('@inquirer/prompts')
 const fs = require ("fs").promises
 // avisando acima que está função acima irá me devolver um objeto e eu quero apenas o select
 //importando os módulos, assim, seguindo esse caminho:
-//vai na pasata node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
+//vai na pasta node_modules e vai procurar um @ enquire/prompts e dentro dela  extrai o código select e tbm do input tbm
 
-let mensagem ="em vindo ao app de metas"
+let mensagem ="Bem vindo ao app de metas"
 
 let metas
 
