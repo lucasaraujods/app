@@ -43,15 +43,3 @@ Este projeto foi desenvolvido utilizando **JavaScript** e **Node.js** com o obje
 
 ---
 
-## ⚙️ Como executar o projeto
-
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   
-2. ```bash
-   npm install
-   
-3. ```bash
-   node index.js
-
